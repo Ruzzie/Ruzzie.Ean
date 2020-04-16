@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Nullable>enable</Nullable>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <PackageVersion>0.0.1.0</PackageVersion>
+        <Title>Ruzzie.Ean</Title>
+        <Authors>Dorus Verhoeckx</Authors>
+        <Company>D Crafting</Company>
+        <Copyright>Copyright © Dorus Verhoeckx 2020</Copyright>
+        <Description>Some functions to parse / deconstruct and validate EAN13 and ISBN13</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/Ruzzie/Ruzzie.Ean</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Ruzzie.Common.Types" Version="0.0.10.31" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="ISBNRangeMessage.xml" />
+      <EmbeddedResource Include="ISBNRangeMessage.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
+</Project>

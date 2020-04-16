@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ruzzie.Ean", "Ruzzie.Ean\Ruzzie.Ean.csproj", "{EF77B143-576A-41DD-93CF-9D8CD9A2DDE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ruzzie.Ean.UnitTests", "Ruzzie.Ean.UnitTests\Ruzzie.Ean.UnitTests.csproj", "{1BAD96F4-B2A2-4203-8445-03B9BFE77A2D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF77B143-576A-41DD-93CF-9D8CD9A2DDE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF77B143-576A-41DD-93CF-9D8CD9A2DDE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF77B143-576A-41DD-93CF-9D8CD9A2DDE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF77B143-576A-41DD-93CF-9D8CD9A2DDE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BAD96F4-B2A2-4203-8445-03B9BFE77A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BAD96F4-B2A2-4203-8445-03B9BFE77A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BAD96F4-B2A2-4203-8445-03B9BFE77A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BAD96F4-B2A2-4203-8445-03B9BFE77A2D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
