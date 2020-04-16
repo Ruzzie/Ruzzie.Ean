@@ -1,5 +1,7 @@
 # Ruzzie.Ean
 Some functions to parse / deconstruct and validate EAN13 and ISBN13
+[![Build status](https://ci.appveyor.com/api/projects/status/xn6p5750hyjycg8d?svg=true)](https://ci.appveyor.com/project/Ruzzie/ruzzie-ean)
+![Nuget](https://img.shields.io/nuget/dt/Ruzzie.Ean?style=flat-square)
 
 ## Examples
 
