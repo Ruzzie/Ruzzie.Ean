@@ -4,14 +4,15 @@
 {
     public interface IISBNParser
     {
-        Result<Err<ISBNParseErrorKind>, ISBN13.Metadata> Parse(long ean);
-        Result<Err<ISBNParseErrorKind>, ISBN13.Metadata> Parse(string ean);
+        Result<Err<ISBNParseErrorKind>, ISBN13.Metadata> Parse(long input);
+        Result<Err<ISBNParseErrorKind>, ISBN13.Metadata> Parse(string input);
     }
 
     public enum ISBNParseErrorKind
     {
         InvalidEan,
         NoMetadataFound,
-        InvalidISBN13
+        InvalidISBN13,
+        InvalidISBN10
     }
 }

@@ -1,12 +1,7 @@
-﻿﻿using System.Runtime.CompilerServices;
-
- namespace Ruzzie.Ean
+﻿namespace Ruzzie.Ean
 {
     public struct Ean13
     {
-        private static readonly long[] DigitPowers = {1, 10, 100, 1000, 10000, 1000_00, 1000_000, 1000_000_0, 1000_000_00, 1000_000_000, 1000_000_000_0, 1000_000_000_00, 1000_000_000_000};
-        private static readonly int DigitPowersLength = DigitPowers.Length;
-
         public long Ean13Code { get; }
         public int Checksum { get; }
 
@@ -14,6 +9,47 @@
         {
             Ean13Code = ean13Code;
             Checksum = checksum;
+        }
+
+        public static ResultCode TryConvertFomISBN10(in ISBN10 isbn10, out Ean13 value)
+        {
+            return ConvertISBN10(isbn10.ISBN10Code, out value);
+        }
+
+        public static ResultCode TryConvertFomISBN10(string isbn10, out Ean13 value)
+        {
+            if (string.IsNullOrWhiteSpace(isbn10) )
+            {
+                value = default;
+                return ResultCode.Invalid;
+            }
+
+            isbn10 = isbn10.Trim();
+
+            if (isbn10.Length != 10)
+            {
+                value = default;
+                return ResultCode.InvalidNumberOfDigits;
+            }
+
+            return ConvertISBN10(isbn10, out value);
+        }
+
+        private static ResultCode ConvertISBN10(string isbn10, out Ean13 value)
+        {
+            var isbn10WithoutChecksum = isbn10.Substring(0, 9);
+            var ean13WitDummyChecksum = $"978{isbn10WithoutChecksum}0";
+
+            if (!long.TryParse(ean13WitDummyChecksum, out var ean13L))
+            {
+                value = default;
+                return ResultCode.InvalidNotAValidNumber;
+            }
+
+            var checkSumDigit = CalculateChecksum(ean13L);
+
+            value = new Ean13(ean13L + checkSumDigit, checkSumDigit);
+            return ResultCode.Success;
         }
 
         public static ResultCode TryParse(string codeToValidate, out Ean13 value)
@@ -38,7 +74,7 @@
                 return ResultCode.InvalidNotAValidNumber;
             }
 
-            var checksumDigitFromInput = NthDigitOf(ean13L, 1);
+            var checksumDigitFromInput = DigitHelper.NthDigit(ean13L, 1);
 
             if (checksumDigitFromInput == -10)
             {
@@ -68,33 +104,21 @@
             //     sum += (i % 2 != 0 ? digit : digit * 3);
             // }
 
-            sum += NthDigitOf(ean13L, 13);
-            sum += NthDigitOf(ean13L, 12) * 3;
-            sum += NthDigitOf(ean13L, 11);
-            sum += NthDigitOf(ean13L, 10) * 3;
-            sum += NthDigitOf(ean13L, 9);
-            sum += NthDigitOf(ean13L, 8) * 3;
-            sum += NthDigitOf(ean13L, 7);
-            sum += NthDigitOf(ean13L, 6) * 3;
-            sum += NthDigitOf(ean13L, 5);
-            sum += NthDigitOf(ean13L, 4) * 3;
-            sum += NthDigitOf(ean13L, 3);
-            sum += NthDigitOf(ean13L, 2) * 3;
+            sum += ean13L.NthDigit(13);
+            sum += ean13L.NthDigit(12) * 3;
+            sum += ean13L.NthDigit(11);
+            sum += ean13L.NthDigit(10) * 3;
+            sum += ean13L.NthDigit(9);
+            sum += ean13L.NthDigit(8) * 3;
+            sum += ean13L.NthDigit(7);
+            sum += ean13L.NthDigit(6) * 3;
+            sum += ean13L.NthDigit(5);
+            sum += ean13L.NthDigit(4) * 3;
+            sum += ean13L.NthDigit(3);
+            sum += ean13L.NthDigit(2) * 3;
 
             var check = 10 - (sum % 10);
             return check;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int NthDigitOf(long number, int digitPosition)
-        {
-#if DEBUG
-            if (digitPosition > DigitPowersLength)
-            {
-                return -10;
-            }
-#endif
-            return (int) (number / DigitPowers[digitPosition - 1] % 10);
         }
 
         public enum ResultCode
@@ -104,7 +128,6 @@
             InvalidNotAValidNumber = -1,
             Invalid = 0,
             Success = 1,
-
         }
     }
 }

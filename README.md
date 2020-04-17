@@ -37,6 +37,41 @@ Some functions to parse / deconstruct and validate EAN13 and ISBN13
     }
 ```
 
+### ISBN10
+```cs
+    //Validate an ISBN10
+    if (ISBN10.TryParse("0306406152", out var isbn10) == ISBN10.ResultCode.Success)
+    {
+        Console.WriteLine($"Code: {isbn10.ISBN10Code} Checksum: {isbn10.Checksum}");
+        //: Code: 0306406152 Checksum: 2
+    }
+
+    // ISBN10 with an invalid checksum
+    var invalidChecksumInput = "0306406150";
+
+    var parseResultCode = ISBN10.TryParse(invalidChecksumInput, out isbn10);
+    Console.WriteLine($"Parse result for {invalidChecksumInput} is {parseResultCode}");
+    //: Parse result for 0306406150 is InvalidChecksum
+```
+
+## Convert ISBN10 To Ean13
+```cs
+    //Convert to Ean13 directly
+    if (Ean13.TryConvertFomISBN10("0306406152", out var ean13) == Ean13.ResultCode.Success)
+    {
+        Console.WriteLine($"Convert ISBN10 from string; Ean13: {ean13.Ean13Code} Checksum: {ean13.Checksum}");
+    }
+
+    //Pass an ISBN10 struct
+    if (ISBN10.TryParse("0306406152", out var isbn10) == ISBN10.ResultCode.Success)
+    {
+        if (Ean13.TryConvertFomISBN10(isbn10, out ean13) == Ean13.ResultCode.Success)
+        {
+            Console.WriteLine($"Convert ISBN10 from struct; Ean13: {ean13.Ean13Code} Checksum: {ean13.Checksum}");
+        }
+    }
+``` 
+
 ### ISBN13
 ```cs
     //Validate and get metadata from an ISBN-13
@@ -63,6 +98,8 @@ Some functions to parse / deconstruct and validate EAN13 and ISBN13
                     break;
                 case ISBNParseErrorKind.InvalidISBN13:
                     break;
+                case ISBNParseErrorKind.InvalidISBN10:
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -85,4 +122,21 @@ Some functions to parse / deconstruct and validate EAN13 and ISBN13
         });
 
     //See: ISBN13MetaDataInfoTests for more examples
+```
+### ISBN13 from ISBN10
+```cs
+    var loadResult = ISBNRangeMessage.LoadFromEmbeddedResource();
+    var isbn13Parser = new ISBN13Parser(loadResult.Unwrap());
+
+    var isbn10Str = "0306406152";
+    Console.WriteLine(isbn13Parser.Parse(isbn10Str).Unwrap());
+    //: 978-0-306-40615-7
+
+    //Invalid ISBN10
+    isbn13Parser.Parse("0306406199").MapErr(err =>
+    {
+        Console.WriteLine($"{err.Message}, {err.ErrorKind}");
+        //: Input 0306406199 is not a valid ISBN10 number: InvalidChecksum, InvalidISBN10
+        return false;
+    });
 ```

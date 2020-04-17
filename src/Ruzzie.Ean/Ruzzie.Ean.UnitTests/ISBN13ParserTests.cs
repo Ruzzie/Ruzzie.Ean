@@ -28,6 +28,26 @@ namespace Ruzzie.Ean.UnitTests
         }
 
         [Test]
+        public void ParseValidISBN10Test()
+        {
+            //Act
+            var parseResult = _parser.Parse("0306406152");
+
+            //Assert
+            parseResult.Unwrap().TitleCode.Should().Be("40615");
+        }
+
+        [Test]
+        public void ParseInvalidISBN10Test()
+        {
+            //Act
+            var parseResult = _parser.Parse("90284142AA");
+
+            //Assert
+            parseResult.UnwrapError().ErrorKind.Should().Be(ISBNParseErrorKind.InvalidISBN10);
+        }
+
+        [Test]
         public void ValidEanButInvalidISBN13()
         {
             //Act

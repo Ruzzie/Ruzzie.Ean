@@ -28,8 +28,8 @@ namespace Ruzzie.Ean
 
             for (int i = 1; i <= numberOfDigits; i++)
             {
-                _digitsFrom[i - 1] = Ean13.NthDigitOf(from, i);
-                _digitsTo[i - 1] = Ean13.NthDigitOf(to, i);
+                _digitsFrom[i - 1] = DigitHelper.NthDigit(from, i);
+                _digitsTo[i - 1] = DigitHelper.NthDigit(to, i);
             }
         }
 
@@ -38,7 +38,7 @@ namespace Ruzzie.Ean
             //Start with largest power
             for (var i = NumberOfDigits; i >= 1; i--)
             {
-                var nthDigitOfNumber = Ean13.NthDigitOf(number, i);
+                var nthDigitOfNumber = DigitHelper.NthDigit(number, i);
 
                 if (nthDigitOfNumber < _digitsFrom[i - 1])
                     return false;
