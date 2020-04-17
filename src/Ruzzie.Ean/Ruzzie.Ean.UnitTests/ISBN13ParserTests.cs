@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using Ruzzie.Common.Types;
 using Ruzzie.Ean.ISBN;
@@ -36,6 +37,20 @@ namespace Ruzzie.Ean.UnitTests
             //Assert
             parseResult.Unwrap().TitleCode.Should().Be("40615");
         }
+
+        [Test]
+        public void ParseValidISBN102Test()
+        {
+            //Act
+            var parseResult = _parser.Parse("904390001X");
+
+            //Assert
+            var metadata = parseResult.Unwrap();
+            Console.WriteLine(metadata.Ean.Ean13Code);
+            metadata.Ean.Ean13Code.Should().Be(9789043900010);
+        }
+
+        //Quadra
 
         [Test]
         public void ParseInvalidISBN10Test()

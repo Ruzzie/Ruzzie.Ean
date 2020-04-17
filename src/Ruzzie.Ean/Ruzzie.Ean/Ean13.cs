@@ -117,7 +117,12 @@
             sum += ean13L.NthDigit(3);
             sum += ean13L.NthDigit(2) * 3;
 
-            var check = 10 - (sum % 10);
+            var check = 10 - (sum % 10);//if sum == 0 then check = 0
+
+            if (check == 10)
+            {
+                return 0;
+            }
             return check;
         }
 
