@@ -1,6 +1,6 @@
 ﻿namespace Ruzzie.Ean
 {
-    public struct ISBN10
+    public readonly struct ISBN10
     {
         public static ISBN10 Empty = new ISBN10(string.Empty, -1);
         public string ISBN10Code { get; }

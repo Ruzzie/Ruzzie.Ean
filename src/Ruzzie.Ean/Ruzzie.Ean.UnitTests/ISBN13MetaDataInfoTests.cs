@@ -46,6 +46,7 @@ namespace Ruzzie.Ean.UnitTests
         [TestCase("9780077159009", true)]
         [TestCase("9781000232134", true)]
         [TestCase("9781001232133", true)]
+        [TestCase("9789071886140", true)]
         [TestCase("9782216115372	", true)]
         public void TryParseTestCases(string validIsbn13, bool hasTitleCode)
         {

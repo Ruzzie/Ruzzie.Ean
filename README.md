@@ -1,5 +1,5 @@
 # Ruzzie.Ean
-Some functions to parse / deconstruct and validate EAN13 and ISBN13
+Some functions to create, parse / deconstruct and validate EAN13 and ISBN13
 [![Build status](https://ci.appveyor.com/api/projects/status/xn6p5750hyjycg8d?svg=true)](https://ci.appveyor.com/project/Ruzzie/ruzzie-ean)
 ![Nuget](https://img.shields.io/nuget/dt/Ruzzie.Ean?style=flat-square)
 
@@ -7,7 +7,7 @@ Some functions to parse / deconstruct and validate EAN13 and ISBN13
 
 ### Ean13
 ```cs
-    // Parse a Ean13 input
+    // Parse / Validate an Ean13 input
     var validInput = "5053083195861";
     if (Ean13.TryParse(validInput, out var ean13) == Ean13.ResultCode.Success)
     {
@@ -35,6 +35,11 @@ Some functions to parse / deconstruct and validate EAN13 and ISBN13
         case Ean13.ResultCode.Success:
             break;
     }
+
+    //Create a 'new' Ean13 and generate the checksum
+    long eanWithoutChecksum = 020067170423;
+    var result = Ean13.Create(eanWithoutChecksum, out var ean13);
+    Console.WriteLine($"Result is: {result}, Code: {ean13} Checksum: {ean13.Checksum}"); 
 ```
 
 ### ISBN10

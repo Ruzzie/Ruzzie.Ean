@@ -151,5 +151,13 @@ namespace Ruzzie.Ean.UnitTests
 
             //See: ISBN13MetaDataInfoTests for more examples
         }
+
+        [Test]
+        public void CreateEan13()
+        {
+            var eanWithoutChecksum = 020067170423;
+            var result = Ean13.Create(eanWithoutChecksum, out var ean13);
+            Console.WriteLine($"Result is: {result}, Code: {ean13} Checksum: {ean13.Checksum}");
+        }
     }
 }

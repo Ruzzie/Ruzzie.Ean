@@ -18,6 +18,7 @@ namespace Ruzzie.Ean.UnitTests
         [TestCase("9063251343", "9063251343", ISBN10.ResultCode.Success)]
         [TestCase("9028414231", "9028414231", ISBN10.ResultCode.Success)]
         [TestCase("059600351X", "059600351X", ISBN10.ResultCode.Success)]
+        [TestCase("9063252706", "9063252706", ISBN10.ResultCode.Success)]
 
         [TestCase("1000000001518", "", ISBN10.ResultCode.InvalidNumberOfDigits)]
         [TestCase("9789028414242", "",ISBN10.ResultCode.InvalidNumberOfDigits)]

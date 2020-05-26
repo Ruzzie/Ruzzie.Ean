@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FsCheck.NUnit;
 using NUnit.Framework;
 
 namespace Ruzzie.Ean.UnitTests
@@ -8,6 +9,9 @@ namespace Ruzzie.Ean.UnitTests
     {
         [TestCase("9644626547849", 9644626547849)]
         [TestCase("9789490433024", 9789490433024)]
+        [TestCase("9789063252700", 9789063252700)]
+        [TestCase("9789063500870", 9789063500870L)]
+        [TestCase("9789071886140", 9789071886140)]
         public void Ok(string codeToValidate, long expected)
         {
             //Act
@@ -66,11 +70,33 @@ namespace Ruzzie.Ean.UnitTests
         [TestCase("0306406152", 9780306406157L)]
         [TestCase("9020254677", 9789020254679L)]
         [TestCase("9063251343", 9789063251345L)]
+        [TestCase("9063252706", 9789063252700L)]
         public void FromISBN10Test(string isbn10Str, long expected)
         {
             ISBN10.TryParse(isbn10Str, out var isbn10);
             Ean13.TryConvertFomISBN10(isbn10, out var ean13).Should().Be(Ean13.ResultCode.Success);
             ean13.Ean13Code.Should().Be(expected);
+        }
+
+        [TestCase(000000012345, Ean13.ResultCode.Success, 000000012345_7)]
+        [TestCase(020067170423, Ean13.ResultCode.Success,020067170423_2)]
+        [TestCase(200671704232,Ean13.ResultCode.Success, 200671704232_4)]
+        [TestCase(1, Ean13.ResultCode.Success,000000000001_7)]
+        [TestCase(-1, Ean13.ResultCode.InvalidNotAValidNumber,000000000000_0)]
+
+        [TestCase(100000012345_6, Ean13.ResultCode.InvalidNumberOfDigits,000000000000_0)]
+        [TestCase(11111111111111, Ean13.ResultCode.InvalidNumberOfDigits,000000000000_0)]
+        public void CreateTest(long digits, Ean13.ResultCode expectedResultCode, long expected)
+        {
+            var resultCode = Ean13.Create(digits, out var ean13);
+            resultCode.Should().Be(expectedResultCode);
+            ean13.Ean13Code.Should().Be(expected);
+        }
+
+        [FsCheck.NUnit.Property]
+        public void CreateProperty_NoExceptions_Test(long digits)
+        {
+            Ean13.Create(digits, out _);
         }
     }
 }

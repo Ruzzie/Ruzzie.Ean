@@ -1,6 +1,6 @@
 ﻿namespace Ruzzie.Ean
 {
-    public struct Ean13
+    public readonly struct Ean13
     {
         public long Ean13Code { get; }
         public int Checksum { get; }
@@ -9,6 +9,33 @@
         {
             Ean13Code = ean13Code;
             Checksum = checksum;
+        }
+
+        public override string ToString()
+        {
+            return Ean13Code.ToString("D13");
+        }
+
+        public static ResultCode Create(long digitsWithoutChecksum, out Ean13 value)
+        {
+            if (digitsWithoutChecksum <= 0)
+            {
+                value = default;
+                return ResultCode.InvalidNotAValidNumber;
+            }
+
+            //If the number of digits >= 13 then
+            //invalid number of digits
+            if (digitsWithoutChecksum >= 100_000_000_000_0)
+            {
+                value = default;
+                return ResultCode.InvalidNumberOfDigits;
+            }
+
+            var ean13LWithDummyChecksum = digitsWithoutChecksum * 10;
+            var checksum = CalculateChecksum(ean13LWithDummyChecksum);
+            value = new Ean13(ean13LWithDummyChecksum + checksum, checksum);
+            return ResultCode.Success;
         }
 
         public static ResultCode TryConvertFomISBN10(in ISBN10 isbn10, out Ean13 value)
@@ -38,9 +65,9 @@
         private static ResultCode ConvertISBN10(string isbn10, out Ean13 value)
         {
             var isbn10WithoutChecksum = isbn10.Substring(0, 9);
-            var ean13WitDummyChecksum = $"978{isbn10WithoutChecksum}0";
+            var ean13WithDummyChecksum = $"978{isbn10WithoutChecksum}0";
 
-            if (!long.TryParse(ean13WitDummyChecksum, out var ean13L))
+            if (!long.TryParse(ean13WithDummyChecksum, out var ean13L))
             {
                 value = default;
                 return ResultCode.InvalidNotAValidNumber;
@@ -96,7 +123,7 @@
 
         private static int CalculateChecksum(long ean13L)
         {
-            var sum = 0;
+            //var sum = 0;
 
             // for (var i = 1; i <= 12; i++)
             // {
@@ -104,7 +131,7 @@
             //     sum += (i % 2 != 0 ? digit : digit * 3);
             // }
 
-            sum += ean13L.NthDigit(13);
+            var sum = ean13L.NthDigit(13);
             sum += ean13L.NthDigit(12) * 3;
             sum += ean13L.NthDigit(11);
             sum += ean13L.NthDigit(10) * 3;
