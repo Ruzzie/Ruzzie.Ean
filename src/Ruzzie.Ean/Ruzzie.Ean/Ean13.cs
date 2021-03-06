@@ -1,4 +1,6 @@
-﻿namespace Ruzzie.Ean
+﻿using System;
+
+namespace Ruzzie.Ean
 {
     public readonly struct Ean13
     {
@@ -14,6 +16,34 @@
         public override string ToString()
         {
             return Ean13Code.ToString("D13");
+        }
+
+        private static readonly char[] Zero = {'0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'};
+
+        public ReadOnlySpan<char> AsReadOnlyCharSpan()
+        {
+            if (Ean13Code == default)
+            {
+                return Zero;
+            }
+
+            var numberChars = new char[13];
+
+            numberChars[0]  = (char) (48 + Ean13Code.NthDigit(13));
+            numberChars[1]  = (char) (48 + Ean13Code.NthDigit(12));
+            numberChars[2]  = (char) (48 + Ean13Code.NthDigit(11));
+            numberChars[3]  = (char) (48 + Ean13Code.NthDigit(10));
+            numberChars[4]  = (char) (48 + Ean13Code.NthDigit(9));
+            numberChars[5]  = (char) (48 + Ean13Code.NthDigit(8));
+            numberChars[6]  = (char) (48 + Ean13Code.NthDigit(7));
+            numberChars[7]  = (char) (48 + Ean13Code.NthDigit(6));
+            numberChars[8]  = (char) (48 + Ean13Code.NthDigit(5));
+            numberChars[9]  = (char) (48 + Ean13Code.NthDigit(4));
+            numberChars[10] = (char) (48 + Ean13Code.NthDigit(3));
+            numberChars[11] = (char) (48 + Ean13Code.NthDigit(2));
+            numberChars[12] = (char) (48 + Ean13Code.NthDigit(1));
+
+            return numberChars;
         }
 
         public static ResultCode Create(long digitsWithoutChecksum, out Ean13 value)

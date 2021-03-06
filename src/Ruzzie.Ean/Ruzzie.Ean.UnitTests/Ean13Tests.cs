@@ -93,6 +93,30 @@ namespace Ruzzie.Ean.UnitTests
             ean13.Ean13Code.Should().Be(expected);
         }
 
+        [TestCase(000000012345,  "0000000123457")]
+        [TestCase(020067170423,  "0200671704232")]
+        [TestCase(200671704232,  "2006717042324")]
+        public void AsReadOnlyCharSpanTests(long digitsWithoutChecksum, string expectedStr)
+        {
+            //Arrange
+            Ean13.Create(digitsWithoutChecksum, out var ean13).Should().Be(Ean13.ResultCode.Success);
+
+            //Act
+            var asSpan = ean13.AsReadOnlyCharSpan();
+
+            //Assert
+            new string(asSpan).Should().Be(expectedStr);
+        }
+
+        [FsCheck.NUnit.Property]
+        public void AsReadOnlyCharSpan_NoExceptions_Test(long digits)
+        {
+            //Arrange
+            Ean13.Create(digits, out var ean13);
+            //Act & Assert
+            new string(ean13.AsReadOnlyCharSpan()).Should().Be(ean13.ToString());
+        }
+
         [FsCheck.NUnit.Property]
         public void CreateProperty_NoExceptions_Test(long digits)
         {

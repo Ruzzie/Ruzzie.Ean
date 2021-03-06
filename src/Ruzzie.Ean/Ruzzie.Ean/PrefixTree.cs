@@ -63,7 +63,7 @@ namespace Ruzzie.Ean
             return false;
         }
 
-        public MatchResult Match(string number)
+        public MatchResult Match(ReadOnlySpan<char> number)
         {
             if (!MatchesPrefix(number, _prefixStr, _prefixNumberOfDigits))
             {
@@ -72,37 +72,39 @@ namespace Ruzzie.Ean
 
             var matches = new List<MatchValue>();
             matches.Add(new MatchValue(_prefixStr, _agency));
-            var numberWithoutPrefix = number.Substring(_prefixNumberOfDigits);
+            var numberWithoutPrefix = number.Slice(_prefixNumberOfDigits);
 
             AddMatchRulesAndChildren(numberWithoutPrefix, matches);
 
             return new MatchResult(MatchResultType.Success, matches);
         }
 
-        private void AddMatchRulesAndChildren(string number, List<MatchValue> matches)
+        private void AddMatchRulesAndChildren(ReadOnlySpan<char> number, List<MatchValue> matches)
         {
             for (var i = 0; i < _rulesCount; i++)
             {
                 var mainRule = _rulesSortedByNumberOfDigits[i];
                 if (mainRule.IsMatch(number))
                 {
-                    var prefix = number.Substring(0, mainRule.NumberOfDigits);
-                    var numberWithoutPrefix = number.Substring(mainRule.NumberOfDigits);
+                    var prefix = number.Slice(0, mainRule.NumberOfDigits);
+                    var numberWithoutPrefix = number.Slice(mainRule.NumberOfDigits);
 
-                    matches.Add(new MatchValue(prefix, _agency));
+                    var prefixStr = new string(prefix);
 
-                    MatchChildren(matches, prefix, numberWithoutPrefix);
+                    matches.Add(new MatchValue(prefixStr, _agency));
+
+                    MatchChildren(matches, prefixStr, numberWithoutPrefix);
 
                     return;
                 }
             }
         }
 
-        private void MatchChildren(List<MatchValue> matches, string prefix, string numberWithoutPrefix)
+        private void MatchChildren(List<MatchValue> matches, string prefixStr,  ReadOnlySpan<char> numberWithoutPrefix)
         {
             foreach (var child in _children)
             {
-                if (string.Equals(child._prefixStr, prefix, StringComparison.Ordinal))
+                if (string.Equals(child._prefixStr, prefixStr, StringComparison.Ordinal))
                 {
                     child.AddMatchRulesAndChildren(numberWithoutPrefix, matches);
                     return;
@@ -110,11 +112,11 @@ namespace Ruzzie.Ean
             }
         }
 
-        private static bool MatchesPrefix(string number, string prefix, int prefixNumberOfDigits)
+        private static bool MatchesPrefix(ReadOnlySpan<char> number, ReadOnlySpan<char> prefix, int prefixNumberOfDigits)
         {
-            var numberPrefix = number.Substring(0, prefixNumberOfDigits);
+            var numberPrefix = number.Slice(0, prefixNumberOfDigits);
 
-            return string.Equals(prefix,numberPrefix, StringComparison.Ordinal);
+            return prefix.Equals(numberPrefix, StringComparison.Ordinal);
         }
     }
 

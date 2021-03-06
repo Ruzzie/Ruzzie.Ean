@@ -7,8 +7,8 @@ namespace Ruzzie.Ean
     {
         public static bool TryParse(IReadOnlyDictionary<string, PrefixTree> ruleTrees, Ean13 ean, out Option<Metadata> metadata)
         {
-            var eanStr = ean.Ean13Code.ToString();
-            var gs1Prefix = eanStr.Substring(0, 3);
+            var eanStr    = ean.AsReadOnlyCharSpan();
+            var gs1Prefix = new string(eanStr.Slice(0, 3));
 
             if (!ruleTrees.TryGetValue(gs1Prefix, out var infoTree))
             {
@@ -40,9 +40,9 @@ namespace Ruzzie.Ean
                     var numberLengthUntilPublisherCode =
                         matchList[0].Prefix.Length + matchList[1].Prefix.Length + matchList[2].Prefix.Length;
 
-                    var titleCode = eanStr.Substring(numberLengthUntilPublisherCode, eanStr.Length - numberLengthUntilPublisherCode -1);
+                    var titleCode = eanStr.Slice(numberLengthUntilPublisherCode, eanStr.Length - numberLengthUntilPublisherCode -1);
                     metadata = new Metadata(ean, matchList[0].Prefix, matchList[1].Prefix, matchList[2].Agency,
-                        matchList[2].Prefix, titleCode);
+                        matchList[2].Prefix, new string(titleCode));
                     return true;
                 default:
                     metadata = Option<Metadata>.None;

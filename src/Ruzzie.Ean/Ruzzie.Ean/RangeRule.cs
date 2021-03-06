@@ -51,21 +51,21 @@ namespace Ruzzie.Ean
             return true;
         }
 
-        public bool IsMatch(string number)
+        public bool IsMatch(ReadOnlySpan<char> number)
         {
-            if (string.IsNullOrWhiteSpace(number) || number.Length < NumberOfDigits)
+            if (number.IsEmpty || number.IsWhiteSpace() || number.Length < NumberOfDigits)
             {
                 return false;
             }
 
-            string numberPrefix;
-            if (number.StartsWith('-') || number.StartsWith('+'))
+            ReadOnlySpan<char> numberPrefix;
+            if (number[0] == '-' || number[0] == '+')
             {
-                numberPrefix = number.Substring(0, NumberOfDigits + 1);
+                numberPrefix = number.Slice(0, NumberOfDigits + 1);
             }
             else
             {
-                numberPrefix = number.Substring(0, NumberOfDigits);
+                numberPrefix = number.Slice(0, NumberOfDigits);
             }
 
             int numberDigits = int.Parse(numberPrefix);

@@ -16,7 +16,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Ruzzie.Common.Types" Version="0.0.10.31" />
+      <PackageReference Include="Ruzzie.Common.Types" Version="0.0.12.35" />
     </ItemGroup>
 
     <ItemGroup>
