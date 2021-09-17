@@ -83,7 +83,7 @@ namespace Ruzzie.Ean
                 _formattedStr =
                     $"{mainPrefix}-{FormatOptionalInfo(countryGroupCode, publisherCode, titleCode, ean)}-{ean.Checksum}";
                 ISBNPrefix =
-                    $"{mainPrefix}-{FormatOptionalInfo(countryGroupCode, publisherCode, string.Empty, ean)}";
+                    $"{mainPrefix}-{FormatOptionalInfo(countryGroupCode, publisherCode, "", ean)}";
             }
 
             private static string FormatOptionalInfo(string countryGroupCode, string publisherCode, string titleCode, in Ean13 ean)
@@ -111,7 +111,9 @@ namespace Ruzzie.Ean
 
             public override string ToString()
             {
-                return _formattedStr;
+                // ReSharper disable once ConstantNullCoalescingCondition
+                // WE DO want this check, if the struct is defined as default then we want an empty string and not null
+                return _formattedStr ?? "";
             }
         }
     }

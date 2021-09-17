@@ -72,9 +72,16 @@ namespace Ruzzie.Ean.UnitTests
             Ean13.TryParse("9789490433024", out var ean13);
             ISBN13.TryParse(_ruleTrees, ean13, out var metadataOpt).Should().BeTrue();
             //Act
-            var formattedString = metadataOpt.Match(() => "",metadata => metadata.ToString());
+            var formattedString = metadataOpt.UnwrapOr(default).ToString();
             //Assert
             formattedString.Should().Be("978-94-90433-02-4");
+        }
+
+        [Test]
+        public void MetaDataToStringIsEmptyOnDefault()
+        {
+            ISBN13.Metadata x = default;
+            x.ToString().Should().Be("");
         }
 
         [FsCheck.NUnit.Property]
