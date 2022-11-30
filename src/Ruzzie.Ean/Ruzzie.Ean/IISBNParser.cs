@@ -1,18 +1,17 @@
-﻿﻿using Ruzzie.Common.Types;
+﻿using Ruzzie.Common.Types;
 
- namespace Ruzzie.Ean
+namespace Ruzzie.Ean;
+
+public interface IISBNParser
 {
-    public interface IISBNParser
-    {
-        Result<Err<ISBNParseErrorKind>, ISBN13.Metadata> Parse(long input);
-        Result<Err<ISBNParseErrorKind>, ISBN13.Metadata> Parse(string input);
-    }
+    Result<Err<ISBNParseErrorKind>, ISBN13.Metadata> Parse(long   input);
+    Result<Err<ISBNParseErrorKind>, ISBN13.Metadata> Parse(string input);
+}
 
-    public enum ISBNParseErrorKind
-    {
-        InvalidEan,
-        NoMetadataFound,
-        InvalidISBN13,
-        InvalidISBN10
-    }
+public enum ISBNParseErrorKind
+{
+    InvalidEan
+  , NoMetadataFound
+  , InvalidISBN13
+  , InvalidISBN10
 }

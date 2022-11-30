@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
         <Nullable>enable</Nullable>
         <NeutralLanguage>en-US</NeutralLanguage>
         <PackageVersion>0.0.1.0</PackageVersion>
@@ -13,10 +12,13 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/Ruzzie/Ruzzie.Ean</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
+        <LangVersion>default</LangVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Ruzzie.Common.Types" Version="0.0.12.35" />
+      <PackageReference Include="Ruzzie.Common.Types" Version="0.0.18.49" />
     </ItemGroup>
 
     <ItemGroup>

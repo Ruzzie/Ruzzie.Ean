@@ -1,22 +1,41 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 
-namespace Ruzzie.Ean
+namespace Ruzzie.Ean;
+
+internal static class DigitHelper
 {
-    internal static class DigitHelper
+    /// Get the value of the n position digit in a number
+    ///   returns -10 when digitPosition is out of bounds in debug mode
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int NthDigit(this long number, int digitPosition)
     {
-        private static readonly long[] DigitPowers = {1, 10, 100, 1000, 10000, 1000_00, 1000_000, 1000_000_0, 1000_000_00, 1000_000_000, 1000_000_000_0, 1000_000_000_00, 1000_000_000_000};
-        private static readonly int DigitPowersLength = DigitPowers.Length;
+        return (int)(number / GetPowerForNthDigit(digitPosition) % 10);
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int NthDigit(this long number, int digitPosition)
+    // 1 returns 1
+    // 2 returns 10
+    // 3 returns 100 etc..
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static long GetPowerForNthDigit(int position)
+    {
+        switch (position)
         {
-#if DEBUG
-            if (digitPosition > DigitPowersLength)
-            {
+            case 1:  return 1;
+            case 2:  return 10;
+            case 3:  return 100;
+            case 4:  return 1000;
+            case 5:  return 10_000;
+            case 6:  return 100_000;
+            case 7:  return 1000_000;
+            case 8:  return 10_000_000;
+            case 9:  return 100_000_000;
+            case 10: return 1000_000_000;
+            case 11: return 10_000_000_000;
+            case 12: return 100_000_000_000;
+            case 13: return 1000_000_000_000;
+            default:
                 return -10;
-            }
-#endif
-            return (int) (number / DigitPowers[digitPosition - 1] % 10);
         }
     }
 }
