@@ -35,7 +35,7 @@ public class ISBN13Parser : IISBNParser
             if (isbn10ParseResult != ISBN10.ResultCode.Success)
             {
                 return
-                    new ParseError($"Input {originalInput} is not a valid ISBN10 number: {isbn10ParseResult.ToString()}"
+                    new ParseError($"Input {originalInput} is not a valid ISBN10 number: {isbn10ParseResult:G}"
                                  , ISBNParseErrorKind.InvalidISBN10);
             }
 
@@ -44,7 +44,7 @@ public class ISBN13Parser : IISBNParser
             if (convertResult != Ean13.ResultCode.Success)
             {
                 return
-                    new ParseError($"Could not convert ISBN10 {originalInput} to EAN13: {isbn10ParseResult.ToString()}"
+                    new ParseError($"Could not convert ISBN10 {originalInput} to EAN13: {isbn10ParseResult:G}"
                                  , ISBNParseErrorKind.InvalidISBN10);
             }
 
@@ -56,7 +56,7 @@ public class ISBN13Parser : IISBNParser
 
         if (ean13ParseResult != Ean13.ResultCode.Success)
         {
-            return new ParseError($"Input {originalInput} is not a valid EAN13 number: {ean13ParseResult.ToString()}"
+            return new ParseError($"Input {originalInput} is not a valid EAN13 number: {ean13ParseResult:G}"
                                 , ISBNParseErrorKind.InvalidEan);
         }
 
