@@ -7,18 +7,18 @@
         <Title>Ruzzie.Ean</Title>
         <Authors>Dorus Verhoeckx</Authors>
         <Company>D Crafting</Company>
-        <Copyright>Copyright © Dorus Verhoeckx 2020</Copyright>
+        <Copyright>Copyright © Dorus Verhoeckx 2020-2023</Copyright>
         <Description>Some functions to parse / deconstruct and validate EAN13 and ISBN13</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/Ruzzie/Ruzzie.Ean</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <LangVersion>default</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net6.0;</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Ruzzie.Common.Types" Version="0.0.19.50" />
+      <PackageReference Include="Ruzzie.Common.Types" Version="0.1.0.54" />
     </ItemGroup>
 
     <ItemGroup>

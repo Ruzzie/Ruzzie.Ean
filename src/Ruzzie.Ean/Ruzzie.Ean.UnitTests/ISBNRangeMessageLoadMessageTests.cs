@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using Ruzzie.Common.Types;
+using Ruzzie.Common.Types.Diagnostics;
 using Ruzzie.Ean.ISBN;
 
 namespace Ruzzie.Ean.UnitTests;
