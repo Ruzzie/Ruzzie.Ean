@@ -62,9 +62,9 @@ public readonly struct Ean13
             return ResultCode.InvalidNumberOfDigits;
         }
 
-        var ean13LWithDummyChecksum = digitsWithoutChecksum * 10;
-        var checksum                = CalculateChecksum(ean13LWithDummyChecksum);
-        value = new Ean13(ean13LWithDummyChecksum + checksum, checksum);
+        var ean13LWithZeroChecksum = digitsWithoutChecksum * 10;
+        var checksum                = CalculateChecksum(ean13LWithZeroChecksum);
+        value = new Ean13(ean13LWithZeroChecksum + checksum, checksum);
         return ResultCode.Success;
     }
 
@@ -160,6 +160,7 @@ public readonly struct Ean13
         //     var digit = NthDigitOf(ean13L, i);
         //     sum += (i % 2 != 0 ? digit : digit * 3);
         // }
+        // we unrolled the loop:
 
         var sum = ean13L.NthDigit(13);
         sum += ean13L.NthDigit(12) * 3;

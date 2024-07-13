@@ -1,11 +1,10 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace Ruzzie.Ean;
 
 internal static class DigitHelper
 {
-    /// Get the value of the n position digit in a number
+    /// Get the value of the nth position digit, for an integer
     ///   returns -10 when digitPosition is out of bounds in debug mode
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int NthDigit(this long number, int digitPosition)
@@ -13,9 +12,10 @@ internal static class DigitHelper
         return (int)(number / GetPowerForNthDigit(digitPosition) % 10);
     }
 
-    // 1 returns 1
-    // 2 returns 10
-    // 3 returns 100 etc..
+    /// Returns the power of the nth digit in an integer for example:
+    /// 1 returns 1
+    /// 2 returns 10
+    /// 3 returns 100 etc.
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static long GetPowerForNthDigit(int position)
     {

@@ -79,6 +79,19 @@ public class ISBN13MetaDataInfoTests
     }
 
     [Test]
+    public void MetaDataIsbnPrefixGetSmokeTest()
+    {
+        //Arrange
+        Ean13.TryParse("9789490433024", out var ean13);
+
+        //Act
+        ISBN13.TryParse(_ruleTrees, ean13, out var metadataOpt).Should().BeTrue();
+
+        //Assert
+        metadataOpt.UnwrapOr(default).ISBNPrefix.Should().Be("978-94-90433");
+    }
+
+    [Test]
     public void MetaDataToStringIsEmptyOnDefault()
     {
         ISBN13.Metadata x = default;

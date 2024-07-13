@@ -35,7 +35,7 @@ public class RangeRule
 
     private bool IsMatch(int number)
     {
-        //Start with largest power
+        //Start with the largest power
         for (var i = NumberOfDigits; i >= 1; i--)
         {
             var nthDigitOfNumber = DigitHelper.NthDigit(number, i);

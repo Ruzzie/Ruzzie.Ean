@@ -11,7 +11,7 @@ public class Examples
     [Test]
     public void ValidateEan13()
     {
-        // Parse a Ean13 input
+        // Parse an Ean13 input
         var validInput = "5053083195861";
         if (Ean13.TryParse(validInput, out var ean13) == Ean13.ResultCode.Success)
         {

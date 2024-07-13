@@ -1,6 +1,5 @@
 ﻿using System;
 using FluentAssertions;
-using FsCheck.NUnit;
 using NUnit.Framework;
 
 namespace Ruzzie.Ean.UnitTests;
